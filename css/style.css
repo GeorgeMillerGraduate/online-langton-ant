@@ -1,0 +1,1083 @@
+
+/* =========================================================
+   JENGA-CODE
+   LANGTON'S ANT
+   NEW PROJECT DESIGN
+   ========================================================= */
+
+:root {
+    font-family: Inter, "Segoe UI", Arial, sans-serif;
+    font-synthesis: none;
+
+    --page: #f3f7fb;
+    --soft: #f6faff;
+    --navy: #0b213d;
+    --text: #172c47;
+    --muted: #6f8099;
+    --blue: #0868f7;
+    --border: #d9e3ed;
+}
+
+
+/* =========================================================
+   BASE
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    background: var(--page);
+    color: var(--text);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--blue);
+}
+
+button,
+input {
+    font: inherit;
+}
+
+button {
+    min-height: 38px;
+    padding: 9px 12px;
+
+    border: 1px solid var(--border);
+    border-radius: 5px;
+
+    background: #fff;
+    color: var(--text);
+
+    cursor: pointer;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+button:hover {
+    background: #edf5ff;
+}
+
+button:disabled {
+    opacity: 0.45;
+    cursor: default;
+}
+
+:focus-visible {
+    outline: 3px solid var(--blue);
+    outline-offset: 3px;
+}
+
+
+/* =========================================================
+   MAIN PAGE
+   ========================================================= */
+
+main {
+    max-width: 1536px;
+    margin: auto;
+    padding: 0 28px;
+}
+
+
+/* =========================================================
+   TOP HEADER
+   ========================================================= */
+
+.site-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+}
+
+.header-inner {
+    width: min(calc(100% - 56px), 1480px);
+    min-height: 78px;
+    margin: auto;
+
+    display: flex;
+    align-items: center;
+
+    gap: 30px;
+}
+
+.site-logo {
+    display: flex;
+    align-items: center;
+    flex: 0 0 auto;
+}
+
+.logo-image {
+    display: block;
+
+    width: auto;
+    height: 50px;
+    max-width: 200px;
+
+    object-fit: contain;
+}
+
+.logo-fallback {
+    color: var(--navy);
+
+    font-size: 22px;
+    font-weight: 760;
+    letter-spacing: -1.2px;
+
+    white-space: nowrap;
+}
+
+.logo-fallback span {
+    font-weight: 400;
+}
+
+
+/* =========================================================
+   NAVIGATION
+   ========================================================= */
+
+.main-nav {
+    display: flex;
+
+    align-self: stretch;
+    align-items: stretch;
+
+    gap: 25px;
+
+    min-width: 0;
+}
+
+.main-nav a {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    flex-shrink: 0;
+
+    min-height: 44px;
+
+    color: var(--muted);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+    color: var(--blue);
+}
+
+.main-nav a.active::after {
+    content: "";
+
+    position: absolute;
+
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    height: 3px;
+
+    background: var(--blue);
+}
+
+
+/* =========================================================
+   HEADER ACTIONS
+   ========================================================= */
+
+.header-actions {
+    margin-left: auto;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    flex-shrink: 0;
+}
+
+.social-link {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-width: 38px;
+    height: 38px;
+
+    padding: 0 8px;
+
+    border: 1px solid var(--border);
+    border-radius: 5px;
+
+    background: var(--soft);
+    color: var(--muted);
+
+    font: 700 10px Consolas, monospace;
+}
+
+.subscribe-button {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 38px;
+
+    margin-left: 4px;
+    padding: 0 17px;
+
+    border: 1px solid var(--blue);
+    border-radius: 5px;
+
+    background: var(--blue);
+    color: #fff;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.subscribe-button:hover {
+    background: #005ce5;
+    color: #fff;
+}
+
+
+/* =========================================================
+   PAGE HEADING
+   ========================================================= */
+
+.page-heading {
+    height: 86px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 24px;
+}
+
+.eyebrow {
+    margin: 0 0 8px;
+
+    color: var(--blue);
+
+    font: 700 10px Consolas, monospace;
+
+    letter-spacing: 1.6px;
+}
+
+.eyebrow span {
+    margin: 0 8px;
+    color: #b9bec5;
+}
+
+h1 {
+    margin: 0;
+
+    color: var(--navy);
+
+    font-size: 30px;
+    font-weight: 650;
+
+    line-height: 1.1;
+
+    letter-spacing: -1.2px;
+}
+
+h1 span {
+    color: var(--blue);
+}
+
+h2 {
+    margin: 0;
+
+    color: var(--navy);
+
+    font-size: 20px;
+
+    letter-spacing: -0.6px;
+}
+
+.page-heading > p {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   MAIN STUDIO
+   ========================================================= */
+
+.studio {
+    overflow: hidden;
+
+    background: #fff;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    box-shadow: 0 8px 30px #0b213d0a;
+}
+
+.studio-heading {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 17px 22px;
+
+    border-bottom: 1px solid var(--border);
+
+    background: var(--soft);
+}
+
+.studio-heading .eyebrow {
+    margin-bottom: 5px;
+}
+
+.studio-heading > strong {
+    padding: 6px 8px;
+
+    border-radius: 4px;
+
+    background: #edf5ff;
+    color: var(--blue);
+
+    font: 700 9px Consolas, monospace;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   WORKSPACE
+   ========================================================= */
+
+.workspace {
+    display: grid;
+
+    grid-template-columns:
+        310px
+        minmax(0, 1fr);
+}
+
+
+/* =========================================================
+   CONTROLS
+   ========================================================= */
+
+.controls {
+    border-right: 1px solid var(--border);
+    background: #fff;
+}
+
+.control-section {
+    padding: 16px 17px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.control-section h3 {
+    margin: 0 0 12px;
+
+    color: var(--navy);
+
+    font-size: 13px;
+}
+
+label {
+    display: block;
+
+    color: var(--muted);
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 0.04em;
+}
+
+
+/* =========================================================
+   TEXT INPUT
+   ========================================================= */
+
+.inline-control {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        auto;
+
+    gap: 6px;
+
+    margin-top: 5px;
+}
+
+input[type="text"] {
+    display: block;
+
+    width: 100%;
+    height: 36px;
+
+    padding: 0 9px;
+
+    border: 1px solid var(--border);
+    border-radius: 5px;
+
+    background: #fff;
+    color: var(--text);
+
+    font-family: Consolas, monospace;
+    font-size: 11px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+}
+
+input[type="text"].invalid {
+    border-color: #d75b5b;
+}
+
+
+/* =========================================================
+   OUTPUT
+   ========================================================= */
+
+output {
+    display: block;
+
+    margin-top: 8px;
+    padding: 8px;
+
+    border-radius: 4px;
+
+    background: var(--soft);
+    color: var(--blue);
+
+    font: 700 10px Consolas, monospace;
+}
+
+.control-note {
+    margin: 8px 0 0;
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   RANGE CONTROLS
+   ========================================================= */
+
+.range-label {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+}
+
+.range-label b {
+    min-width: 38px;
+
+    padding: 4px 6px;
+
+    border-radius: 4px;
+
+    background: var(--soft);
+    color: var(--blue);
+
+    font: 700 9px Consolas, monospace;
+
+    text-align: center;
+}
+
+input[type="range"] {
+    display: block;
+
+    width: 100%;
+
+    margin-top: 10px;
+
+    accent-color: var(--blue);
+}
+
+
+/* =========================================================
+   CHECKBOX
+   ========================================================= */
+
+.check {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    margin-top: 15px;
+
+    color: var(--text);
+
+    font-size: 10px;
+
+    cursor: pointer;
+}
+
+.check input {
+    accent-color: var(--blue);
+}
+
+
+/* =========================================================
+   BUTTONS
+   ========================================================= */
+
+.button-stack {
+    padding: 15px 17px;
+}
+
+.button-stack .primary {
+    width: 100%;
+
+    margin-bottom: 7px;
+
+    background: var(--blue);
+    border-color: var(--blue);
+
+    color: #fff;
+}
+
+.button-stack .primary:hover {
+    background: #005ce5;
+}
+
+.button-stack > div {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 5px;
+}
+
+.button-stack > div button {
+    padding: 7px 4px;
+
+    font-size: 9px;
+}
+
+.clear-button {
+    width: 100%;
+
+    margin-top: 6px;
+
+    color: #a84848;
+}
+
+.clear-button:hover {
+    background: #fff5f5;
+
+    border-color: #e7bcbc;
+}
+
+
+/* =========================================================
+   VISUALISER
+   ========================================================= */
+
+.render-panel {
+    min-width: 0;
+
+    background: var(--soft);
+}
+
+.canvas-heading {
+    height: 49px;
+
+    padding: 0 16px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    border-bottom: 1px solid var(--border);
+
+    color: var(--blue);
+
+    font: 700 9px Consolas, monospace;
+
+    letter-spacing: 1px;
+}
+
+.canvas-heading small {
+    color: var(--muted);
+
+    font: 400 9px Inter, sans-serif;
+
+    letter-spacing: 0;
+}
+
+
+/* =========================================================
+   CANVAS
+   ========================================================= */
+
+.canvas-shell {
+    position: relative;
+
+    margin: 16px;
+
+    overflow: hidden;
+
+    border: 1px solid #cad6e1;
+    border-radius: 4px;
+
+    background: #ffffff;
+
+    aspect-ratio: 3 / 2;
+}
+
+.canvas-shell canvas {
+    display: block;
+
+    width: 100%;
+    height: 100%;
+
+    cursor: crosshair;
+
+    touch-action: manipulation;
+}
+
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+.render-stats {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    margin-top: 14px;
+
+    border-top: 1px solid var(--border);
+}
+
+.render-stats span {
+    padding: 10px 14px;
+
+    border-right: 1px solid var(--border);
+}
+
+.render-stats span:last-child {
+    border: 0;
+}
+
+.render-stats small,
+.render-stats b {
+    display: block;
+}
+
+.render-stats small {
+    margin-bottom: 3px;
+
+    color: var(--muted);
+
+    font: 700 8px Consolas, monospace;
+}
+
+.render-stats b {
+    color: var(--navy);
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   STATE LEGEND
+   ========================================================= */
+
+.legend-panel {
+    display: grid;
+
+    grid-template-columns:
+        150px
+        minmax(200px, 1fr)
+        minmax(160px, auto);
+
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 13px 17px;
+
+    border-top: 1px solid var(--border);
+}
+
+.legend-title .eyebrow {
+    margin-bottom: 4px;
+}
+
+.legend-title h3 {
+    margin: 0;
+
+    color: var(--navy);
+
+    font-size: 13px;
+}
+
+#stateLegend {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    min-width: 0;
+
+    overflow-x: auto;
+}
+
+.legend-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+
+    flex: 0 0 auto;
+
+    padding: 6px 8px;
+
+    border: 1px solid var(--border);
+    border-radius: 4px;
+
+    background: var(--soft);
+
+    color: var(--text);
+
+    font-size: 9px;
+}
+
+.legend-swatch,
+.state-colour,
+.state-color {
+    width: 13px;
+    height: 13px;
+
+    flex: 0 0 13px;
+
+    border: 1px solid #cad6e1;
+    border-radius: 3px;
+}
+
+.legend-description {
+    margin: 0;
+
+    color: var(--muted);
+
+    font-size: 9px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FOOTNOTE
+   ========================================================= */
+
+.footnote {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: baseline;
+
+    gap: 24px;
+
+    padding: 12px 0;
+
+    color: var(--muted);
+
+    font-size: 10px;
+
+    line-height: 1.6;
+}
+
+.footnote p {
+    margin: 0;
+}
+
+.footnote details {
+    max-width: 570px;
+}
+
+.footnote details p {
+    margin-top: 8px;
+}
+
+summary {
+    cursor: pointer;
+
+    color: var(--text);
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+    min-height: 54px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 22px;
+
+    border-top: 1px solid var(--border);
+
+    font-size: 10px;
+}
+
+.brand {
+    color: var(--navy);
+
+    font-size: 22px;
+    font-weight: 760;
+
+    letter-spacing: -1.2px;
+
+    white-space: nowrap;
+}
+
+.brand span {
+    font-weight: 400;
+}
+
+footer > span {
+    color: var(--muted);
+}
+
+footer nav {
+    margin-left: auto;
+
+    display: flex;
+
+    gap: 18px;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+    .header-inner {
+        flex-wrap: wrap;
+
+        gap: 0 20px;
+
+        padding: 12px 0 0;
+    }
+
+    .main-nav {
+        order: 3;
+
+        flex-basis: 100%;
+
+        flex-wrap: wrap;
+
+        column-gap: 25px;
+
+        margin-top: 8px;
+    }
+
+    .main-nav a {
+        min-height: 44px;
+    }
+
+    .workspace {
+        grid-template-columns:
+            280px
+            minmax(0, 1fr);
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 780px) {
+
+    main {
+        padding: 0 12px;
+    }
+
+    .page-heading {
+        height: 80px;
+    }
+
+    .page-heading > p {
+        display: none;
+    }
+
+    h1 {
+        font-size: 26px;
+    }
+
+    .workspace {
+        grid-template-columns: 1fr;
+    }
+
+    .controls {
+        border-right: 0;
+
+        border-bottom: 1px solid var(--border);
+    }
+
+    .control-section {
+        padding: 13px;
+    }
+
+    .button-stack {
+        padding: 13px;
+    }
+
+    .canvas-shell {
+        margin: 10px;
+
+        aspect-ratio: 1 / 1;
+    }
+
+    .legend-panel {
+        grid-template-columns: 1fr;
+    }
+
+    .legend-description {
+        margin-top: 0;
+    }
+
+    .footnote {
+        flex-direction: column;
+
+        gap: 8px;
+    }
+
+    footer {
+        flex-wrap: wrap;
+
+        gap: 12px;
+
+        padding: 15px 0;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .site-header {
+        position: static;
+    }
+
+    .header-inner {
+        width: calc(100% - 32px);
+
+        gap: 0 8px;
+    }
+
+    .logo-image {
+        height: 40px;
+
+        max-width: 160px;
+    }
+
+    .header-actions {
+        gap: 6px;
+    }
+
+    .header-actions .social-link {
+        display: none;
+    }
+
+    .subscribe-button {
+        min-height: 40px;
+
+        padding: 0 10px;
+
+        font-size: 11px;
+    }
+
+    .main-nav {
+        width: 100%;
+
+        column-gap: 22px;
+    }
+
+    .canvas-heading small {
+        display: none;
+    }
+
+    .render-stats span {
+        padding: 8px;
+    }
+
+    .render-stats b {
+        font-size: 9px;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+    footer nav {
+        margin-left: 0;
+    }
+
+}
